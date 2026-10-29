@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>hi im a virtual machine</title>
+  <meta name="description" content="hi im a virtual machine">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      background: #0d1117;
+      color: #7ee787;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .term {
+      width: 100%;
+      max-width: 640px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 10px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.5);
+      overflow: hidden;
+    }
+    .bar {
+      display: flex; gap: 8px; padding: 12px 14px;
+      background: #21262d; border-bottom: 1px solid #30363d;
+    }
+    .bar span { width: 12px; height: 12px; border-radius: 50%; }
+    .bar span:nth-child(1) { background: #ff5f56; }
+    .bar span:nth-child(2) { background: #ffbd2e; }
+    .bar span:nth-child(3) { background: #27c93f; }
+    .screen { padding: 28px 24px 32px; font-size: clamp(16px, 4vw, 22px); line-height: 1.6; }
+    .prompt { color: #8b949e; }
+    h1 { font-size: inherit; font-weight: 600; display: inline; }
+    .cursor {
+      display: inline-block; width: .6em; height: 1.1em;
+      background: #7ee787; vertical-align: text-bottom; margin-left: 2px;
+      animation: blink 1s steps(1) infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+    @media (prefers-reduced-motion: reduce) { .cursor { animation: none; } }
+  </style>
+</head>
+<body>
+  <main class="term">
+    <div class="bar" aria-hidden="true"><span></span><span></span><span></span></div>
+    <div class="screen">
+      <p class="prompt">vm@home:~$ whoami</p>
+      <h1 id="msg">hi im a virtual machine</h1><span class="cursor" aria-hidden="true"></span>
+    </div>
+  </main>
+  <script>
+    (function () {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var el = document.getElementById('msg');
+      var text = el.textContent;
+      el.textContent = '';
+      var i = 0;
+      setTimeout(function type() {
+        el.textContent = text.slice(0, ++i);
+        if (i < text.length) setTimeout(type, 70);
+      }, 400);
+    })();
+  </script>
+</body>
+</html>
